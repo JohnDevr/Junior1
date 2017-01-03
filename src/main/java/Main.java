@@ -49,7 +49,7 @@ public class Main {
             }
         } catch (Exception e) {
             System.out.println(e);
-            //return null;
+            return;
         }
         sResult = SearchBlocksFromText(inputText, openBlock, closeBlock);
 
