@@ -85,25 +85,25 @@ public class Main {
 
     private static void CommonResult(ArrayList<String> result) {
         JSONObject resultJson = new JSONObject();
-        String minLength = (String) result.get(0);
-        String maxLength = (String) result.get(0);
+        String minLength = result.get(0);
+        String maxLength = result.get(0);
         int midLength = 0;
 
         System.out.println("Колличесво блоков текста: " + result.size());
 
         for (int i = 0; i < result.size(); ++i) {
-            if (minLength.length() > ((String) result.get(i)).length()) {
-                minLength = (String) result.get(i);
-            } else if (maxLength.length() < ((String) result.get(i)).length()) {
-                maxLength = (String) result.get(i);
+            if (minLength.length() > (result.get(i)).length()) {
+                minLength = result.get(i);
+            } else if (maxLength.length() < (result.get(i)).length()) {
+                maxLength = result.get(i);
             }
 
-            midLength += ((String) result.get(i)).length();
+            midLength += (result.get(i)).length();
         }
 
         resultJson.put("Максимальная длина блока текста: ", maxLength.length());
         resultJson.put("Минимальная длина блока текста: ", minLength.length());
-        resultJson.put("Средняя длина блока текста: ", midLength / result.size());
+        resultJson.put("Средняя длина блока текста: ", (int) midLength / result.size());
         System.out.println("Общие результаты:");
         System.out.println(resultJson.toString());
     }
@@ -112,22 +112,20 @@ public class Main {
         JSONObject resultJson = new JSONObject();
         System.out.println("Результаты для каждого блока:");
 
-        for (int i = 0; i < result.size(); ++i) {
-            int numericSymbolsNumber = 0;
-            int latinSymbolsNumber = 0;
-            int cyrillicSymbolsNumber = 0;
-            int otherSymbolsNumber = 0;
-
-            for (int j = 0; j < ((String) result.get(i)).length(); ++j) {
-                char symbol = ((String) result.get(i)).charAt(j);
-                if (symbol >= 48 && symbol <= 57) {
-                    ++numericSymbolsNumber;
-                } else if (symbol >= 97 && symbol <= 122 || symbol >= 65 && symbol <= 90) {
-                    ++latinSymbolsNumber;
-                } else if ((symbol < 1072 || symbol > 1103) && (symbol < 1040 || symbol > 1071)) {
-                    ++otherSymbolsNumber;
+        for (int i = 0; i < result.size(); i++) {
+            int numericSymbolsNumber = 0, latinSymbolsNumber = 0, cyrillicSymbolsNumber = 0, otherSymbolsNumber = 0;
+            for (int j = 0; j < (result.get(i)).length(); j++) {
+                char symbol = result.get(i).charAt(j);
+                if (symbol >= '0' && symbol <= '9') {
+                    numericSymbolsNumber++;
+                } else if ((symbol >= 'a' && symbol <= 'z') ||
+                        (symbol >= 'A' && symbol <= 'Z')) {
+                    latinSymbolsNumber++;
+                } else if ((symbol >= 'а' && symbol <= 'я') ||
+                        (symbol >= 'А' && symbol <= 'Я')) {
+                    cyrillicSymbolsNumber++;
                 } else {
-                    ++cyrillicSymbolsNumber;
+                    otherSymbolsNumber++;
                 }
             }
 
